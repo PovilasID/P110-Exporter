@@ -40,3 +40,21 @@ jobs:
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/p110-exporter:latest
           cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/p110-exporter:buildcache
           cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/p110-exporter:buildcache,mode=max
+
+      -
+        name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      -
+        name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository }}:latest
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
