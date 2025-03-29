@@ -129,3 +129,11 @@ devices:
   study: "192.168.1.102"
   living_room: "192.168.1.183"
 ```
+
+
+## TODO
+
+- [ ] Migrate from PyP100 to https://github.com/petretiandrea/plugp100 (Current Library is not very well maintained, so there are no updates or long dealays then there are breaking firmware changes)
+
+## Disclaimer
+This is meant as an alternative independent way to monitor. However, if you are using home automation Home Assistant has HACS integration that is well maintained and if you finda cheap tastoma hardware it better to use that to avoid breaking changes.
