@@ -125,13 +125,39 @@ class Collector:
             for room, ip_address in deviceMap.items()
             if (device := create_device(ip_address, room)) is not None
         }
+        self.email_address = email_address
+        self.password = password
 
     def get_device_data(self, device, ip_address, room):
         with time_observation(ip_address, room):
             logger.debug("retrieving energy usage statistics for device", extra={
                 "ip": ip_address, "room": room,
             })
-            return device.getEnergyUsage()
+            try:
+                # Attempt to get energy usage
+                return device.getEnergyUsage()
+            except Exception as e:
+                logger.warning("Failed to retrieve energy usage, attempting to fully reset connection", extra={
+                    "ip": ip_address, "room": room, "error": str(e),
+                })
+                try:
+                    # Fully reset the device connection
+                    logger.info("Creating a new device instance to reset connection", extra={"ip": ip_address, "room": room})
+                    new_device = PyP110.P110(ip_address, self.email_address, self.password)
+                    new_device.handshake()
+                    new_device.login()
+                    logger.info("Connection reset successful", extra={"ip": ip_address, "room": room})
+
+                    # Replace the device in the devices dictionary
+                    self.devices[room] = (ip_address, new_device)
+
+                    # Retry getting energy usage with the new device
+                    return new_device.getEnergyUsage()
+                except Exception as reset_error:
+                    logger.error("Full connection reset failed for device", extra={
+                        "ip": ip_address, "room": room, "error": str(reset_error),
+                    })
+                    raise reset_error  # Raise the exception if resetting the connection fails
 
     def collect(self):
         logger.info("recieving prometheus metrics scrape: collecting observations")
@@ -157,6 +183,5 @@ class Collector:
                 logger.exception("encountered exception during observation!")
 
         for m in metrics.values():
-            yield m        
+            yield m
 
-            
