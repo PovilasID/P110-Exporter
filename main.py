@@ -1,5 +1,6 @@
 from threading import Event
 import signal
+import os  # Add this import at the top
 
 from click import command, option
 from loguru import logger
@@ -37,23 +38,37 @@ def start_monitoring(prometheus_port, collector):
 )
 @option(
     '--config-file', default="tapo.yaml", envvar="TAPO_MONITOR_CONFIG",
-    help="Password associated with TP-Link TAPO account."
+    help="Path to the configuration file."
 )
 @option(
-    '--prometheus-port', default=8080, help="port for prometheus metric exposition"
+    '--prometheus-port', default=8080, help="Port for Prometheus metric exposition."
 )
 def run(tapo_email, tapo_password, config_file, prometheus_port):
-    with open(config_file, "r") as cfg:
-        config = safe_load(cfg)
-    
-    logger.info("configuring metrics collector and prometheus http server")
-    collector = Collector(config['devices'], tapo_email, tapo_password)
+    # Check if DEVICES environment variable is defined
+    devices_env = os.getenv("DEVICES")
+    if devices_env:
+        # Parse the DEVICES environment variable into a dictionary
+        devices = {}
+        for pair in devices_env.split(","):
+            if ":" in pair:
+                device, room = pair.split(":")
+                devices[device.strip()] = room.strip()
+        logger.info("Using devices from DEVICES environment variable.")
+    else:
+        # Fallback to reading the configuration file
+        with open(config_file, "r") as cfg:
+            config = safe_load(cfg)
+            devices = config['devices']
+        logger.info("Using devices from configuration file.")
+
+    logger.info("Configuring metrics collector and Prometheus HTTP server.")
+    collector = Collector(devices, tapo_email, tapo_password)
     start_monitoring(prometheus_port, collector)
 
     shutdown = Event()
     graceful_shutdown(shutdown)
 
-    logger.info("service is up, and awaiting for signals to stop")
+    logger.info("Service is up and awaiting signals to stop.")
     shutdown.wait()
 
 
