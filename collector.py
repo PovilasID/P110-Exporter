@@ -1,3 +1,4 @@
+import os
 from contextlib import contextmanager
 from enum import Enum, auto
 from math import floor
@@ -96,6 +97,7 @@ class Collector:
             }
             logger.debug("connecting to device", extra=extra)
             
+            max_retries = int(os.getenv("MAX_RETRY_COUNT", 3))  # Default to 3 if not set
             exception_count = 0  # Counter for exceptions
             
             while True:
@@ -106,7 +108,7 @@ class Collector:
                 except Exception as e:
                     exception_count += 1
                     logger.error("failed to connect to device", extra=extra, exc_info=True)
-                    if exception_count >= 3:  # Return None after the third exception
+                    if max_retries != 0 and exception_count >= max_retries:
                         d = None
                         break
                     sleep(1)  # Sleep for 1 second after each exception

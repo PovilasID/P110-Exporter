@@ -21,7 +21,8 @@ services:
     environment:
       - TAPO_EMAIL=YOUR@EMAIL.COM
       - TAPO_PASSWORD=CHANGE_ME
-      - PORT=9333 # optional
+      - PORT=9333                 # (optional)
+      - MAX_RETRY_COUNT=3         # (optional) Default is 3 but if set to '0' will not stop trying to reach the device
 ```
 Create tapo.yaml and list P110 ips/names that exporter will be able to reach them.
 You can check it in the Tapo App -> the plug -> gear in top right -> "Device info": IP address OR in your router Wifi router DHCP leases) tip: make a lease static

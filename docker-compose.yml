@@ -10,4 +10,5 @@ services:
     environment:
       - TAPO_EMAIL=YOUR@EMAIL.COM
       - TAPO_PASSWORD=CHANGE_ME
-      - PORT=9333 # optional
+      - PORT=9333                 # (optional)
+      - MAX_RETRY_COUNT=3         # (optional) Default is 3 but if set to '0' will not stop trying to reach the device
