@@ -34,7 +34,7 @@ devices:
 ```
 Run the exporter
 ```console
-docker compose up -d
+docker-compose up -d
 ```
 Add exporter to Prometheus by adding a job (replace 127.0.0.1 with your exporter machine):
 
@@ -57,7 +57,7 @@ docker build -t p110-exporter .
 Create tapo.yaml as above
 Run the exporter
 ```console
-docker compose up -d
+docker-compose up -d
 ```
 Add to Prometheus and import Grafana
 ## Exposed Metrics
