@@ -1,0 +1,747 @@
+{
+	"__inputs": [
+		{
+			"name": "DS_PROMETHEUS",
+			"label": "Prometheus",
+			"description": "",
+			"type": "datasource",
+			"pluginId": "prometheus",
+			"pluginName": "Prometheus"
+		},
+		{
+			"name": "VAR_USD_PER_KWH",
+			"type": "constant",
+			"label": "US/kWh",
+			"value": "0.16",
+			"description": ""
+		}
+	],
+	"__elements": {},
+	"__requires": [
+		{
+			"type": "panel",
+			"id": "gauge",
+			"name": "Gauge",
+			"version": ""
+		},
+		{
+			"type": "grafana",
+			"id": "grafana",
+			"name": "Grafana",
+			"version": "9.0.3"
+		},
+		{
+			"type": "datasource",
+			"id": "prometheus",
+			"name": "Prometheus",
+			"version": "1.0.0"
+		},
+		{
+			"type": "panel",
+			"id": "stat",
+			"name": "Stat",
+			"version": ""
+		},
+		{
+			"type": "panel",
+			"id": "timeseries",
+			"name": "Time series",
+			"version": ""
+		}
+	],
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "grafana",
+					"uid": "-- Grafana --"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"target": {
+					"limit": 100,
+					"matchAny": false,
+					"tags": [],
+					"type": "dashboard"
+				},
+				"type": "dashboard"
+			}
+		]
+	},
+	"description": "Tapo P110",
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": null,
+	"iteration": 1667074071060,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "watth"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 4,
+				"x": 0,
+				"y": 0
+			},
+			"id": 13,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "code",
+					"exemplar": false,
+					"expr": "sum by (room) (tapo_p110_today_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"})",
+					"legendFormat": "{{machine}}",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Todays usage",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "currencyUSD"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 5,
+				"x": 4,
+				"y": 0
+			},
+			"id": 12,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "code",
+					"exemplar": false,
+					"expr": "sum by (room)(tapo_p110_today_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$us_per_kWh)",
+					"legendFormat": "{{machine}}",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Todays price",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 3,
+				"x": 9,
+				"y": 0
+			},
+			"id": 6,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "builder",
+					"expr": "tapo_p110_device_count{job=\"$job\", machine=\"$machine\"}",
+					"legendFormat": "{{machine}}",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Number of plugs",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"noValue": "off",
+					"thresholds": {
+						"mode": "percentage",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "mwatt"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 12,
+				"w": 12,
+				"x": 12,
+				"y": 0
+			},
+			"id": 4,
+			"options": {
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"showThresholdLabels": false,
+				"showThresholdMarkers": true,
+				"text": {}
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "code",
+					"expr": "sum by (room)(tapo_p110_power_consumption_w{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"})",
+					"legendFormat": "__auto",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Current draw",
+			"type": "gauge"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"description": "",
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "watth"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 4,
+				"x": 0,
+				"y": 6
+			},
+			"id": 10,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "code",
+					"expr": "sum by (room) (tapo_p110_month_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"})",
+					"legendFormat": "{{machine}}",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Monthly use",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "currencyUSD"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 5,
+				"x": 4,
+				"y": 6
+			},
+			"id": 14,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "code",
+					"exemplar": false,
+					"expr": "sum by (room)(tapo_p110_month_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$us_per_kWh)",
+					"legendFormat": "{{machine}}",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Months price",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "currencyUSD"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 3,
+				"x": 9,
+				"y": 6
+			},
+			"id": 16,
+			"options": {
+				"colorMode": "value",
+				"graphMode": "area",
+				"justifyMode": "auto",
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": [
+						"lastNotNull"
+					],
+					"fields": "",
+					"values": false
+				},
+				"textMode": "auto"
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "builder",
+					"expr": "$us_per_kWh",
+					"legendFormat": "__auto",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "US/kWh",
+			"type": "stat"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "${DS_PROMETHEUS}"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "palette-classic"
+					},
+					"custom": {
+						"axisLabel": "",
+						"axisPlacement": "auto",
+						"barAlignment": 0,
+						"drawStyle": "line",
+						"fillOpacity": 15,
+						"gradientMode": "opacity",
+						"hideFrom": {
+							"legend": false,
+							"tooltip": false,
+							"viz": false
+						},
+						"lineInterpolation": "linear",
+						"lineWidth": 1,
+						"pointSize": 5,
+						"scaleDistribution": {
+							"type": "linear"
+						},
+						"showPoints": "auto",
+						"spanNulls": false,
+						"stacking": {
+							"group": "A",
+							"mode": "none"
+						},
+						"thresholdsStyle": {
+							"mode": "off"
+						}
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "mwatt"
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 10,
+				"w": 24,
+				"x": 0,
+				"y": 12
+			},
+			"id": 8,
+			"options": {
+				"legend": {
+					"calcs": [],
+					"displayMode": "list",
+					"placement": "bottom"
+				},
+				"tooltip": {
+					"mode": "single",
+					"sort": "none"
+				}
+			},
+			"pluginVersion": "9.0.3",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "${DS_PROMETHEUS}"
+					},
+					"editorMode": "code",
+					"expr": "tapo_p110_power_consumption_w{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}",
+					"legendFormat": "{{room}}",
+					"range": true,
+					"refId": "A"
+				}
+			],
+			"title": "Current draw ",
+			"type": "timeseries"
+		}
+	],
+	"refresh": "30s",
+	"schemaVersion": 36,
+	"style": "dark",
+	"tags": [],
+	"templating": {
+		"list": [
+			{
+				"hide": 2,
+				"label": "US/kWh",
+				"name": "us_per_kWh",
+				"query": "${VAR_USD_PER_KWH}",
+				"skipUrlSync": false,
+				"type": "constant",
+				"current": {
+					"value": "${VAR_USD_PER_KWH}",
+					"text": "${VAR_USD_PER_KWH}",
+					"selected": false
+				},
+				"options": [
+					{
+						"value": "${VAR_USD_PER_KWH}",
+						"text": "${VAR_USD_PER_KWH}",
+						"selected": false
+					}
+				]
+			},
+			{
+				"current": {},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "${DS_PROMETHEUS}"
+				},
+				"definition": "label_values(tapo_p110_today_energy_wh, job)",
+				"hide": 0,
+				"includeAll": false,
+				"label": "Job",
+				"multi": false,
+				"name": "job",
+				"options": [],
+				"query": {
+					"query": "label_values(tapo_p110_today_energy_wh, job)",
+					"refId": "StandardVariableQuery"
+				},
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			},
+			{
+				"current": {},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "${DS_PROMETHEUS}"
+				},
+				"definition": "label_values(tapo_p110_today_energy_wh, machine)",
+				"hide": 0,
+				"includeAll": false,
+				"label": "Machine",
+				"multi": false,
+				"name": "machine",
+				"options": [],
+				"query": {
+					"query": "label_values(tapo_p110_today_energy_wh, machine)",
+					"refId": "StandardVariableQuery"
+				},
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			},
+			{
+				"current": {},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "${DS_PROMETHEUS}"
+				},
+				"definition": "label_values(tapo_p110_today_energy_wh, room)",
+				"hide": 0,
+				"includeAll": true,
+				"label": "Rooms",
+				"multi": true,
+				"name": "rooms",
+				"options": [],
+				"query": {
+					"query": "label_values(tapo_p110_today_energy_wh, room)",
+					"refId": "StandardVariableQuery"
+				},
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			}
+		]
+	},
+	"time": {
+		"from": "now-6h",
+		"to": "now"
+	},
+	"timepicker": {},
+	"timezone": "",
+	"title": "Energy monitoring",
+	"uid": "c40p3MV4k",
+	"version": 9,
+	"weekStart": ""
+}
