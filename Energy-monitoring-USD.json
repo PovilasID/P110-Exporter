@@ -11,7 +11,7 @@
 		{
 			"name": "VAR_USD_PER_KWH",
 			"type": "constant",
-			"label": "US/kWh",
+			"label": "USD/kWh",
 			"value": "0.16",
 			"description": ""
 		}
@@ -205,13 +205,13 @@
 					},
 					"editorMode": "code",
 					"exemplar": false,
-					"expr": "sum by (room)(tapo_p110_today_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$us_per_kWh)",
+					"expr": "sum by (room)(tapo_p110_today_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$usd_per_kWh)",
 					"legendFormat": "{{machine}}",
 					"range": true,
 					"refId": "A"
 				}
 			],
-			"title": "Todays price",
+			"title": "Today's price",
 			"type": "stat"
 		},
 		{
@@ -304,7 +304,7 @@
 							}
 						]
 					},
-					"unit": "mwatt"
+					"unit": "watt"
 				},
 				"overrides": []
 			},
@@ -409,7 +409,7 @@
 					"refId": "A"
 				}
 			],
-			"title": "Monthly use",
+			"title": "Monthly usage",
 			"type": "stat"
 		},
 		{
@@ -470,13 +470,13 @@
 					},
 					"editorMode": "code",
 					"exemplar": false,
-					"expr": "sum by (room)(tapo_p110_month_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$us_per_kWh)",
+					"expr": "sum by (room)(tapo_p110_month_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$usd_per_kWh)",
 					"legendFormat": "{{machine}}",
 					"range": true,
 					"refId": "A"
 				}
 			],
-			"title": "Months price",
+			"title": "Monthly price",
 			"type": "stat"
 		},
 		{
@@ -536,13 +536,13 @@
 						"uid": "${DS_PROMETHEUS}"
 					},
 					"editorMode": "builder",
-					"expr": "$us_per_kWh",
+					"expr": "$usd_per_kWh",
 					"legendFormat": "__auto",
 					"range": true,
 					"refId": "A"
 				}
 			],
-			"title": "US/kWh",
+			"title": "USD/kWh",
 			"type": "stat"
 		},
 		{
@@ -597,7 +597,7 @@
 							}
 						]
 					},
-					"unit": "mwatt"
+					"unit": "watt"
 				},
 				"overrides": []
 			},
@@ -646,7 +646,7 @@
 			{
 				"hide": 2,
 				"label": "US/kWh",
-				"name": "us_per_kWh",
+				"name": "usd_per_kWh",
 				"query": "${VAR_USD_PER_KWH}",
 				"skipUrlSync": false,
 				"type": "constant",
@@ -735,7 +735,7 @@
 		]
 	},
 	"time": {
-		"from": "now-6h",
+		"from": "now-24h",
 		"to": "now"
 	},
 	"timepicker": {},
