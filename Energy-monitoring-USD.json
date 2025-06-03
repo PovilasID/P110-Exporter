@@ -11,7 +11,7 @@
 		{
 			"name": "VAR_USD_PER_KWH",
 			"type": "constant",
-			"label": "USD/kWh",
+			"label": "US/kWh",
 			"value": "0.16",
 			"description": ""
 		}
@@ -144,7 +144,7 @@
 					"refId": "A"
 				}
 			],
-			"title": "Today's usage",
+			"title": "Todays usage",
 			"type": "stat"
 		},
 		{
@@ -205,13 +205,13 @@
 					},
 					"editorMode": "code",
 					"exemplar": false,
-					"expr": "sum by (room)(tapo_p110_today_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$usd_per_kWh)",
+					"expr": "sum by (room)(tapo_p110_today_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$us_per_kWh)",
 					"legendFormat": "{{machine}}",
 					"range": true,
 					"refId": "A"
 				}
 			],
-			"title": "Today's price",
+			"title": "Todays price",
 			"type": "stat"
 		},
 		{
@@ -304,7 +304,7 @@
 							}
 						]
 					},
-					"unit": "watt"
+					"unit": "mwatt"
 				},
 				"overrides": []
 			},
@@ -409,7 +409,7 @@
 					"refId": "A"
 				}
 			],
-			"title": "Monthly usage",
+			"title": "Monthly use",
 			"type": "stat"
 		},
 		{
@@ -470,13 +470,13 @@
 					},
 					"editorMode": "code",
 					"exemplar": false,
-					"expr": "sum by (room)(tapo_p110_month_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$usd_per_kWh)",
+					"expr": "sum by (room)(tapo_p110_month_energy_wh{job=\"$job\", machine=\"$machine\", room=~\"$rooms\"}/1000*$us_per_kWh)",
 					"legendFormat": "{{machine}}",
 					"range": true,
 					"refId": "A"
 				}
 			],
-			"title": "Monthly price",
+			"title": "Months price",
 			"type": "stat"
 		},
 		{
@@ -536,13 +536,13 @@
 						"uid": "${DS_PROMETHEUS}"
 					},
 					"editorMode": "builder",
-					"expr": "$usd_per_kWh",
+					"expr": "$us_per_kWh",
 					"legendFormat": "__auto",
 					"range": true,
 					"refId": "A"
 				}
 			],
-			"title": "USD/kWh",
+			"title": "US/kWh",
 			"type": "stat"
 		},
 		{
@@ -597,7 +597,7 @@
 							}
 						]
 					},
-					"unit": "watt"
+					"unit": "mwatt"
 				},
 				"overrides": []
 			},
@@ -646,7 +646,7 @@
 			{
 				"hide": 2,
 				"label": "US/kWh",
-				"name": "usd_per_kWh",
+				"name": "us_per_kWh",
 				"query": "${VAR_USD_PER_KWH}",
 				"skipUrlSync": false,
 				"type": "constant",
